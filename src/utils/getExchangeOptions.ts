@@ -36,9 +36,7 @@ function getExchangeOptions({
       axisPointer: {
         type: 'line',
       },
-      position: function (point: number[], rect: any) {
-        console.log(rect);
-        
+      position: function (point: number[]) {
         return [point[0] + 20, point[1] - 30];
       },
       // Стилизация тултипа при наведении мыши на графике
