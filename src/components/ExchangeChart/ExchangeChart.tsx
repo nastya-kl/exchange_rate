@@ -117,7 +117,7 @@ function ExchangeChart() {
   );
 
   // Функция для определения среднего значения курса за все месяцы
-  function calculateAverage(nums: number[]) {
+  function calculateAverage(nums: number[]): number {
     if (nums.length === 0) {
       return 0;
     }
@@ -125,10 +125,12 @@ function ExchangeChart() {
     const sum = nums.reduce((acc, num) => acc + num, 0);
     const average = sum / nums.length;
 
-    return average.toFixed(1);
+    return Number(average.toFixed(1));
   }
 
-  const midscore = calculateAverage(currentExchangeValue);
+  // Вместо точки отображать запятую
+  const midscore =
+    calculateAverage(currentExchangeValue).toLocaleString('ru-RU');
 
   return (
     <Theme preset={presetGpnDefault}>

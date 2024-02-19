@@ -16,6 +16,7 @@ function getExchangeOptions({
     // Заголовок
     title: {
       text: chartTitle,
+      padding: [0, 0, 0, 30],
       textStyle: {
         color: '#002033',
         fontWeight: 700,
@@ -25,7 +26,7 @@ function getExchangeOptions({
       },
     },
     grid: {
-      top: 60,
+      top: 80,
     },
     // Окно с инф-цией
     tooltip: {
@@ -35,17 +36,28 @@ function getExchangeOptions({
       axisPointer: {
         type: 'line',
       },
-      position: function (point: number[]) {
+      position: function (point: number[], rect: any) {
+        console.log(rect);
+        
         return [point[0] + 20, point[1] - 30];
       },
+      // Стилизация тултипа при наведении мыши на графике
+      formatter: function (params: any) {
+        const colorCircle = `<span style="display:inline-block;margin-right:6px;margin-bottom:-2px;border-radius:50%;width:12px;height:12px;background-color:${params[0].color};"></span>`;
+        const valueText = `<span style="font-weight:bold">${params[0].value} ₽</span>`;
+        const monthText = `<span style="font-weight:bold;display:inline-block;margin-bottom:8px;padding:0">${params[0].name}</span>`;
+        const exchangeNameText = `<span style="color:#667985;margin-right:39px">${params[0].seriesName}</span>`;
+
+        return `${monthText}<br />${colorCircle}${exchangeNameText} ${valueText}`;
+      },
+      padding: 5.5,
       textStyle: {
         color: '#002033',
         fontFamily: 'Inter',
-        fontWeight: 700,
         fontSize: 12,
         lineHeight: 16.8,
       },
-      extraCssText: 'box-shadow: 0 10px 14px rgba(0, 32, 51, 0.3)',
+      extraCssText: 'box-shadow: 0 10px 14px rgba(0, 32, 51, 0.3);',
     },
     xAxis: {
       type: 'category',
@@ -74,6 +86,13 @@ function getExchangeOptions({
       type: 'value',
       splitNumber: 3,
       scale: true,
+      splitLine: {
+        lineStyle: {
+          color: 'rgba(0, 65, 102, 0.2)',
+          type: [1, 4],
+          dashOffset: 5,
+        },
+      },
       axisLabel: {
         margin: 24,
         color: 'rgba(102, 121, 133, 1)',
