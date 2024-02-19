@@ -1,0 +1,52 @@
+.chart {
+  max-width: 1440px;
+  display: flex;
+  flex-direction: row;
+  margin: 70px auto;
+  justify-content: center;
+
+  &__wrapper {
+    position: relative;
+    display: flex;
+  }
+
+  &__switcher {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+
+  &__data-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__midscore {
+    &-info {
+      color: #667985;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 24px;
+      margin: 0 0 20px 0;
+    }
+    &-num {
+      color: #f38b00;
+      font-size: 48px;
+      font-weight: 400;
+      line-height: 72px;
+      margin: 0;
+    }
+    &-rub {
+      color: #667985;
+      font-size: 20px;
+      font-weight: 400;
+      line-height: 30px;
+    }
+  }
+
+  &__loader {
+    margin-top: 150px;
+  }
+}
