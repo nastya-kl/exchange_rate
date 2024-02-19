@@ -18,6 +18,11 @@ function ExchangeChart() {
   const [isEuro, setIsEuro] = useState<boolean>(false);
   const [isYuan, setIsYuan] = useState<boolean>(false);
 
+  // Заголовок графика
+  const [chartTitle, setChartTitle] = useState<string>('КУРС ДОЛЛАРА, $/₽');
+  // Название валюты в тултипе при наведении мыли на график
+  const [tooltipInfo, setTooltipInfo] = useState<string>('Курс доллара');
+
   // Символы валют для переключателя
   type IIcon = string;
   const icons: IIcon[] = ['$', '€', '¥'];
@@ -65,12 +70,18 @@ function ExchangeChart() {
     if (isDollar) {
       const dollarExchangeData = separatedData['Курс доллара'];
       setCurrentExchangeValue(getExchangeValues(dollarExchangeData));
+      setChartTitle('КУРС ДОЛЛАРА, $/₽');
+      setTooltipInfo('Курс доллара');
     } else if (isEuro) {
       const euroExchangeData = separatedData['Курс евро'];
       setCurrentExchangeValue(getExchangeValues(euroExchangeData));
+      setChartTitle('КУРС ЕВРО, €/₽');
+      setTooltipInfo('Курс евро');
     } else if (isYuan) {
       const yuanExchangeData = separatedData['Курс юаня'];
       setCurrentExchangeValue(getExchangeValues(yuanExchangeData));
+      setChartTitle('КУРС ЮАНЯ, ¥/₽');
+      setTooltipInfo('Курс юаня');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isDollar, isEuro, isYuan]);
@@ -122,7 +133,12 @@ function ExchangeChart() {
     <Theme preset={presetGpnDefault}>
       <Card shadow={false} className="chart">
         <ReactECharts
-          option={getExchangeOptions({ currentExchangeValue, exchangeMonth })}
+          option={getExchangeOptions({
+            currentExchangeValue,
+            exchangeMonth,
+            chartTitle,
+            tooltipInfo,
+          })}
           style={{
             maxWidth: '1000px',
             height: '400px',

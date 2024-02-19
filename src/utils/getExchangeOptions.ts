@@ -1,14 +1,21 @@
 interface IOptionsProps {
   currentExchangeValue: number[];
   exchangeMonth: Date[];
+  chartTitle: string;
+  tooltipInfo: string;
 }
 
-function getExchangeOptions({currentExchangeValue, exchangeMonth}: IOptionsProps) {
+function getExchangeOptions({
+  currentExchangeValue,
+  exchangeMonth,
+  chartTitle,
+  tooltipInfo,
+}: IOptionsProps) {
   const options = {
     color: '#F38B00',
     // Заголовок
     title: {
-      text: 'КУРС ДОЛЛАРА, $/₽',
+      text: chartTitle,
       textStyle: {
         color: '#002033',
         fontWeight: 700,
@@ -65,7 +72,7 @@ function getExchangeOptions({currentExchangeValue, exchangeMonth}: IOptionsProps
     },
     yAxis: {
       type: 'value',
-      splitNumber: 5,
+      splitNumber: 3,
       scale: true,
       axisLabel: {
         margin: 24,
@@ -86,7 +93,7 @@ function getExchangeOptions({currentExchangeValue, exchangeMonth}: IOptionsProps
     },
     series: [
       {
-        name: 'Курс доллара',
+        name: tooltipInfo,
         type: 'line',
         data: currentExchangeValue,
         symbol: 'none',
