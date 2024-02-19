@@ -3,6 +3,7 @@ import { Theme, presetGpnDefault } from '@consta/uikit/Theme';
 import { Card } from '@consta/uikit/Card';
 import { Text } from '@consta/uikit/Text';
 import { ChoiceGroup } from '@consta/uikit/ChoiceGroup';
+import { Loader } from '@consta/uikit/Loader';
 import { ReactECharts } from '../../Echarts/ReactECharts';
 import { getExchangeRate } from '../../api/api';
 import { IExchangeRateData } from '../../types';
@@ -33,15 +34,15 @@ function ExchangeChart() {
   const [currentExchangeValue, setCurrentExchangeValue] = useState<number[]>(
     []
   );
-  // Добавить прелоадер
-  // const [isLoading, setIsLoading] = useState<boolean>(false);
+  // Состояние загрузки для прелоадера
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const { groupedData, getExchangeValues } = onChangeExchange();
 
   useEffect(() => {
     (async () => {
       try {
-        // setIsLoading(true);
+        setIsLoading(true);
         const data = await getExchangeRate();
         setExchangeData(data);
         // Разделяем массив на 3 части в зависимсти от названия валюты
@@ -54,8 +55,8 @@ function ExchangeChart() {
         }
       } catch (error) {
         console.error('Error fetching data:', error);
-        // } finally {
-        //   setIsLoading(false);
+      } finally {
+        setIsLoading(false);
       }
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -131,41 +132,45 @@ function ExchangeChart() {
 
   return (
     <Theme preset={presetGpnDefault}>
-      <Card shadow={false} className="chart">
-        <ReactECharts
-          option={getExchangeOptions({
-            currentExchangeValue,
-            exchangeMonth,
-            chartTitle,
-            tooltipInfo,
-          })}
-          style={{
-            maxWidth: '1000px',
-            height: '400px',
-          }}
-        />
-        <Card shadow={false} className="chart__wrapper">
-          <ChoiceGroup
-            value={value}
-            // испр. ошибку типизации
-            onChange={onChandge}
-            items={icons}
-            getItemLabel={(item: string) => item}
-            multiple={false}
-            className="chart__switcher"
-            size="xs"
-            name={'Exchange'}
+      {isLoading ? (
+        <Loader className="chart__loader" />
+      ) : (
+        <Card shadow={false} className="chart">
+          <ReactECharts
+            option={getExchangeOptions({
+              currentExchangeValue,
+              exchangeMonth,
+              chartTitle,
+              tooltipInfo,
+            })}
+            style={{
+              maxWidth: '1000px',
+              height: '400px',
+            }}
           />
-          <Card shadow={false} className="chart__data-container">
-            <Text as="p" className="chart__midscore-info">
-              Среднее за период
-            </Text>
-            <Text as="p" className="chart__midscore-num">
-              {midscore} <span className="chart__midscore-rub">₽</span>
-            </Text>
+          <Card shadow={false} className="chart__wrapper">
+            <ChoiceGroup
+              value={value}
+              // испр. ошибку типизации
+              onChange={onChandge}
+              items={icons}
+              getItemLabel={(item: string) => item}
+              multiple={false}
+              className="chart__switcher"
+              size="xs"
+              name={'Exchange'}
+            />
+            <Card shadow={false} className="chart__data-container">
+              <Text as="p" className="chart__midscore-info">
+                Среднее за период
+              </Text>
+              <Text as="p" className="chart__midscore-num">
+                {midscore} <span className="chart__midscore-rub">₽</span>
+              </Text>
+            </Card>
           </Card>
         </Card>
-      </Card>
+      )}
     </Theme>
   );
 }
